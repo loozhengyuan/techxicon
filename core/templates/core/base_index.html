@@ -1,0 +1,63 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+        height: 100%;
+        background: url('{% static "core/img/bg-masthead.jpg" %}') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+        -o-background-size: cover;
+    }
+
+    html {
+        height: 100%;
+    }
+
+    .container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overlay {
+        background-color: rgba(0, 0, 0, 0.4);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+</style>
+{% endblock css %}
+
+
+{% block content %}
+<div class="overlay">
+    <div class="container">
+    <div class="row text-center text-white">
+        <div class="col-xl-9 mx-auto">
+            <h1 class="mb-5 display-4"><strong>Ask me any tech term!</strong></h1>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+            <form method="POST" action="{% url 'search' %}">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-12 col-md-9 mb-2 mb-md-0">
+                        <input name="keyphrase" type="text" class="form-control form-control-lg"
+                               placeholder="Search a word or phrase">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button type="submit" class="btn btn-block btn-lg btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

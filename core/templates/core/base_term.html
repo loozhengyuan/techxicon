@@ -1,0 +1,103 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+        padding-top: 54px;
+    }
+
+    @media (min-width: 992px) {
+        body {
+            padding-top: 56px;
+        }
+    }
+</style>
+{% endblock css %}
+
+
+{% block content %}
+<div class="container mb-5 mt-5">
+    <div class="col-md-8 mb-3 p-2">
+        <h2>{{ term.term }}</h2>
+        <p>
+            {% if term.definition is not none %}
+            {{ term.definition|safe|linebreaks }}
+            {% endif %}
+
+            {% if term.explanation is not none %}
+            {{ term.explanation|safe|linebreaks }}
+            {% endif %}
+
+            {% if term.examples is not none %}
+            Examples:
+            {{ term.examples|safe|linebreaks }}
+            {% endif %}
+
+            {% if term.see_also is not none %}
+            See Also:
+            {{ term.see_also|safe|linebreaks }}
+            {% endif %}
+        </p>
+        <p class="small mt-3"><a href="#" onclick="toggle_visibility('improve_div')">IMPROVE DEFINITION</a></p>
+        <div class="form-group" id="improve_div" style="display:none;">
+            <textarea class="form-control" id="improve_text" name="improve_text" rows="5"
+                      placeholder="Feel free to include texts, external links, or even video links"></textarea>
+            <button type="submit" class="btn btn-primary btn-improve-submit mt-3">Submit</button>
+        </div>
+        <small class="form-text text-success" id="improve_defn_success"></small>
+        <small class="form-text text-danger" id="improve_defn_error"></small>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
+    function toggle_visibility(id) {
+        var e = document.getElementById(id);
+        if (e.style.display == 'block'){
+            e.style.display = 'none';
+        }
+        else {
+            e.style.display = 'block';
+            $('#improve_defn_success').html('');
+            $('#improve_defn_error').html('');
+        }
+    }
+
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $('.btn-improve-submit').click(function () {
+        toggle_visibility('improve_div');
+        $.ajax({
+            url: '{% url 'term' term.term %}',
+            type: "POST",
+            data: {
+                improve_text: $('#improve_text').val() || '',
+            },
+            success: function () {
+                $('#improve_defn_error').html('');
+                $('#improve_defn_success').html('Your response has been recorded!');
+            },
+            error: function () {
+                $('#improve_defn_success').html('');
+                $('#improve_defn_error').html('An error has occurred');
+            }
+        });
+    });
+</script>
+{% endblock js %}

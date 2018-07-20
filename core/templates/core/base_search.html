@@ -1,0 +1,120 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+    padding-top: 54px;
+    }
+
+    @media (min-width: 992px) {
+        body {
+            padding-top: 56px;
+        }
+    }
+</style>
+{% endblock css %}
+
+
+{% block content %}
+    <div class="container mb-5 mt-5">
+        <div class="row">
+            <div class="col-xl-9 col-lg-9 mx-auto">
+                <form action="{% url 'search' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-12 col-xs-8 col-sm-9 col-md-10 mb-2 mb-md-0">
+                            <input name="keyphrase" type="text" class="form-control form-control-lg"
+                                   placeholder="Search a word or phrase">
+                        </div>
+                        <div class="col-12 col-xs-4 col-sm-3 col-md-2">
+                            <button type="submit" class="btn btn-block btn-lg btn-outline-primary">Search</button>
+                        </div>
+                    </div>
+                    <div class="col text-center mt-2">
+                        {% for alphabet in alphabets %}
+                            <a href="{% url 'explore' alphabet %}" onclick="form.submit()">  {{ alphabet|upper }}  </a>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5 mt-5">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-9 col-xl-9 mx-auto">
+                {% for result in results %}
+                <div class="col-md-8 mb-3 p-2">
+                    <h1>{{ result.term }} {% if result.acronym is not None %}{{ "("|add:result.acronym|add:")" }}{% endif %}</h1>
+                    <p>{{ result.definition|safe }}</p>
+                    <ul class="list-inline small">
+                        {% if result.explanation is not none or result.examples is not none or result.see_also is not none %}
+                            <li class="list-inline-item"><a href="{% url 'term' result.term %}">READ MORE</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if results %}
+    <div class="container mb-5 text-center">
+        <h5 class="mb-1" align="center">Not what you're looking for?</h5>
+        <a class="btn btn-outline-primary mr-1 my-1" href="https://www.google.com/search?q={{ searched }}" role="button">Search On Google</a>
+        <button class="btn btn-outline-primary btn-suggest-submit mr-1 my-1" type="submit">Suggest This Term</button>
+        <small class="form-text text-success" id="suggest_success"></small>
+        <small class="form-text text-danger" id="suggest_error"></small>
+    </div>
+    {% elif searched %}
+    <div class="container mb-5 mt-5 text-center">
+        <h1 class="mb-3" align="center">No results for '{{ searched }}'</h1>
+        <a class="btn btn-outline-primary mr-1 my-1" href="https://www.google.com/search?q={{ searched }}" role="button">Search On Google</a>
+        <button class="btn btn-outline-primary btn-suggest-submit mr-1 my-1" type="submit">Suggest This Term</button>
+        <small class="form-text text-success" id="suggest_success"></small>
+        <small class="form-text text-danger" id="suggest_error"></small>
+    </div>
+    {% endif %}
+
+    <input type="hidden" id="searched_keyphrase" name="searched_keyphrase" value="{{ searched }}">
+
+{% endblock content %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $('.btn-suggest-submit').click(function () {
+        $.ajax({
+            url: '{% url 'search' %}',
+            type: "POST",
+            data: {
+                suggest_keyphrase: $('#searched_keyphrase').val(),
+            },
+            success: function () {
+                $('#suggest_error').html('');
+                $('#suggest_success').html('Thank you for your suggestion!');
+            },
+            error: function () {
+                $('#suggest_success').html('');
+                $('#suggest_error').html('An error has occurred');
+            }
+        });
+    });
+</script>
+{% endblock js %}

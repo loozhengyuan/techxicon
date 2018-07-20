@@ -1,0 +1,115 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+    padding-top: 54px;
+    }
+
+    @media (min-width: 992px) {
+        body {
+            padding-top: 56px;
+        }
+    }
+</style>
+{% endblock css %}
+
+
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'index' %}">Home
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'about' %}">About
+    </a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'suggest' %}">Suggest
+        <span class="sr-only">(current)</span>
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'feedback' %}">Feedback
+    </a>
+</li>
+{% endblock navbar %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 text-center mt-5 mb-5">
+            <h1 class="mt-5">Suggest a term</h1>
+            <p class="lead">Tell us what words or phrases we should include in the future</p>
+        </div>
+    </div>
+</div>
+
+<!-- Form -->
+<div class="container">
+    <div class="col-xl-9 col-lg-9 mx-auto">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="suggest_name">Name</label>
+                <input type="text" class="form-control form-control-lg" id="suggest_name" name="suggest_name" value="">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="suggest_dept">Department</label>
+                <input type="text" class="form-control form-control-lg" id="suggest_dept" name="suggest_dept" value="">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="suggest_keyphrase">Enter a word or phrase:</label>
+                <input type="text" class="form-control form-control-lg" id="suggest_keyphrase" name="suggest_keyphrase">
+            </div>
+        </div>
+        <small class="form-text text-success" id="suggest_success"></small>
+        <small class="form-text text-danger" id="suggest_error"></small>
+        <button type="submit" class="btn btn-primary btn-lg btn-block btn-suggest-submit mt-3 mb-5 float-right">Submit</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<script>
+    var csrftoken = Cookies.get('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $('.btn-suggest-submit').click(function () {
+        $.ajax({
+            url: '{% url 'suggest' %}',
+            type: "POST",
+            data: {
+                suggest_name: $('#suggest_name').val(),
+                suggest_dept: $('#suggest_dept').val(),
+                suggest_keyphrase: $('#suggest_keyphrase').val(),
+            },
+            success: function () {
+                $('#suggest_keyphrase').val('');
+                $('#suggest_error').html('');
+                $('#suggest_success').html('Your response has been recorded!');
+            },
+            error: function () {
+                $('#suggest_success').html('');
+                $('#suggest_error').html('An error has occurred');
+            }
+        });
+    });
+</script>
+{% endblock js %}

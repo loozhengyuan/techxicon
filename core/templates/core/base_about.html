@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    body {
+    padding-top: 54px;
+    }
+
+    @media (min-width: 992px) {
+        body {
+            padding-top: 56px;
+        }
+    }
+</style>
+{% endblock css %}
+
+
+{% block navbar %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'index' %}">Home
+    </a>
+</li>
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'about' %}">About
+        <span class="sr-only">(current)</span>
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'suggest' %}">Suggest
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'feedback' %}">Feedback
+    </a>
+</li>
+{% endblock navbar %}
+
+
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9 mt-5 mb-5">
+            <h1 class="mt-5">About Techxicon</h1>
+            <br>
+            <p class="lead">
+                Techxicon is a tech dictionary created with emphasis on simplified definitions and contextualised examples to the public service where relevant.
+                <br><br>
+                It is a pilot project by Digital Capabilities Team at Civil Service College, with the aim of establishing a common 'digital' language between public officers. We envision Techxicon to be a one-stop resource where public officers can search, learn, and explore technology terms and processes.
+                <br><br>
+                If you encounter any bug, have a word in mind that is not found on our database, or have any feedback regarding our initiative, please share it with us over <a href="{% url 'feedback' %}">here</a>!
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
