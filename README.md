@@ -167,7 +167,7 @@ cd civil-service-college
 
 Clone the repository by running the following command
 ```shell
-git clone http://gitlab.zhengyuan.me/civil-service-college/techxicon.git
+git clone https://github.com/loozhengyuan/techxicon.git
 ```
 
 ### Step 4: Create a virtualenv for the project
