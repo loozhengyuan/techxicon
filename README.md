@@ -32,11 +32,12 @@ It is a pilot project by Digital Capabilities Team at Civil Service College, wit
   - [Step 5: Install required dependencies](#step-5-install-required-dependencies)
   - [Step 6: Initial settings](#step-6-initial-settings)
   - [Step 7: Setup webserver](#step-7-setup-webserver)
-  - [Step 8: Go live!](#step-8-go-live!)
+  - [Step 8: Go live!](#step-8-go-live)
 - [Maintenance](#maintenance)
   - [Accessing the admin portal](#accessing-the-admin-portal)
   - [Adding new users](#adding-new-users)
   - [Adding new terms](#adding-new-terms)
+  - [Editing raw code](#editing-raw-code)
 - [Roadmap](#roadmap)
 - [Acknowledgements](#acknowledgements)
 - [License](#license)
@@ -64,8 +65,7 @@ By default, DigitalOcean allows you to access console via browser, but it is oft
 ##### Connecting using PuTTY Client
 ![SSH Login](docs/img/ssh/login.png)
 
-_Tip:_
-It is advisable to __ONLY__ open port `22` when you need it and to block the port once you are done accessing it.
+_Tip: It is advisable to __ONLY__ open port `22` when you need it and to block the port once you are done accessing it._
 
 ## Installation
 
@@ -141,8 +141,7 @@ su - postgres -c 'createuser --interactive --pwprompt'
 su - postgres -c 'createdb -O cscadmin cscadmin'
 ```
 
-_Tip:_
-If you do not have `root` access, use `sudo -u` instead of `su -`.
+_Tip: If you do not have `root` access, use `sudo -u` instead of `su -`._
 
 ##### Create database schemas
 Lastly, for the purpose of this webapp, we will be confining the database tables under the `techxicon` schema.
@@ -339,8 +338,7 @@ root               soft    nofile          8192
 root               hard    nofile          8192
 ```
 
-_Tip:_
-If you do not have `root` access, you should change `root` to `*` instead.
+_Tip: If you do not have `root` access, you should change `root` to `*` instead._
 
 ### Step 8: Go live
 
@@ -368,8 +366,7 @@ cd ~/civil-service-college/techxicon
 gunicorn techxicon.wsgi -b 0:8001
 ```
 
-_Tip:_
-If you want, you can run many instances of Django apps on the same Caddy server. This can be done by [editing the `Caddyfile`](#step-7-setup-webserver) and running another instance using a __different port__.
+_Tip: If you want, you can run many instances of Django apps on the same Caddy server. This can be done by [editing the Caddyfile](#step-7-setup-webserver) and running another instance using a __different port__._
 
 ##### Managing screen sessions
 In subsequent sessions, you can resume the sessions by typing the following command. This will list the session number that you should reconnect to:
@@ -382,8 +379,7 @@ For example, you would like to resume back to 1429:
 screen -r 1429
 ```
 
-_Tip:_
-If you would like to exit or change session, you can do so by pressing `CTRL-A` followed by `CTRL-D`.
+_Tip: If you would like to exit or change session, you can do so by pressing `CTRL-A` followed by `CTRL-D`._
 
 ## Maintenance
 
@@ -420,10 +416,9 @@ Terms are displayed on the [terms](#term-list) page; you can add or remove terms
 ##### Add Term Page
 ![Add Term](/docs/img/admin/add_term.png)
 
-### Editing raw files/code
+### Editing raw code
 
-_Disclaimer:_
-While some changes require changes to the code, make sure you know what you are doing because it may cause irreversible changes to the webapp. As a precausion, be sure to backup everything before you make attempt the changes.
+_Disclaimer: While some changes require changes to the code, make sure you know what you are doing because it may cause irreversible changes to the webapp. As a precausion, be sure to backup everything before you make attempt the changes._
 
 ##### Pushing changes to production server
 
