@@ -390,31 +390,31 @@ This can be easily done using DigitalOcean's platform by taking snapshot of the 
 Majority of the customisation can be managed via the admin portal. If you would like to add word or amend the definitions, you can enter the admin portal with this url: [https://techxicon.digitalcapabilities.team/admin](https://techxicon.digitalcapabilities.team/admin)
 
 ##### Login Page
-![Techxicon Login](/docs/img/admin/login.png)
+![Techxicon Login](docs/img/admin/login.png)
 
 ##### Dashboard
-![Dashboard](/docs/img/admin/dashboard.png)
+![Dashboard](docs/img/admin/dashboard.png)
 
 ### Adding new users
 Users can be easily added by navigating to the `Authentication and Authorization` page. Permissions are generally managed through `Groups`, which can be edited on the same section. Currently, there are two main groups - (1)`Administrators` and (2)`Contributors`. Once a new user has been added, assign the user to a specific group depending on your needs.
 
 ##### User List
-![Users](/docs/img/admin/users.png)
+![Users](docs/img/admin/users.png)
 
 ##### Add User Page
-![Add User](/docs/img/admin/add_user.png)
+![Add User](docs/img/admin/add_user.png)
 
 ##### Edit User Permissions
-![Edit User](/docs/img/admin/edit_perm.png)
+![Edit User](docs/img/admin/edit_perm.png)
 
 ### Adding new terms
 Terms are displayed on the [terms](#term-list) page; you can add or remove terms from this page. To add terms, simply click the top right hand corner of the page, where it brings to you the [add terms](#add-term-page) page. When adding or editing terms, do take note of the guidelines written below each field. It is advisable to browse multiple definitions first to understand the writing format before attempting to add new terms. Since Markdown links are programmed to be automatically converted to HTML format, it is important for one to be familiar with the hyperlink syntax for both languages. For every word added, one should search the word to ensure the content displays consistently with other terms and ensure the links are working.
 
 ##### Term List
-![Term](/docs/img/admin/terms.png)
+![Term](docs/img/admin/terms.png)
 
 ##### Add Term Page
-![Add Term](/docs/img/admin/add_term.png)
+![Add Term](docs/img/admin/add_term.png)
 
 ### Editing raw code
 
